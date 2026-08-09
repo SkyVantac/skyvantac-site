@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SKY VANTAC — Cercle privé import / export</title>
+<meta name="description" content="Cercle B2B privé pour l'import / export. Sur admission." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%235B8CFF' stroke-width='6'/%3E%3Cellipse cx='50' cy='50' rx='14' ry='34' fill='none' stroke='%235B8CFF' stroke-width='4.4'/%3E%3Cline x1='14' y1='50' x2='86' y2='50' stroke='%235B8CFF' stroke-width='4.4'/%3E%3Ccircle cx='72' cy='30' r='6.4' fill='%235B8CFF'/%3E%3C/svg%3E" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Cairo:wght@400;600;700&display=swap');
+  :root{ --ink:#0B0F14; --ink2:#141A21; --line:#212b36; --acc:#5B8CFF; --acc2:#9FC5FF; --parch:#F4F7FA; --mut:#8E99A8; --dim:#5c6875; }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ink); color:var(--parch); font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased}
+  [dir="rtl"] body, [dir="rtl"]{font-family:'Cairo','Inter',sans-serif}
+  button{font-family:inherit; cursor:pointer}
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:20px 28px}
+  .brand-sm{font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.14em; font-size:15px; display:flex; align-items:center; gap:10px}
+  .lang{display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line); border-radius:100px; padding:6px 12px; background:rgba(255,255,255,.02)}
+  .lang:hover{border-color:var(--acc)}
+  .lang select{appearance:none; background:none; border:none; color:var(--parch); font-family:inherit; font-size:13px; cursor:pointer; outline:none}
+  .lang select option{background:var(--ink2)}
+  .lang .caret{color:var(--mut); font-size:10px}
+
+  .hero{position:relative; min-height:86vh; display:flex; align-items:center; justify-content:center; padding:50px 24px 80px; overflow:hidden; text-align:center; background:radial-gradient(120% 80% at 50% -20%, #17263f 0%, var(--ink) 58%)}
+  .hero-grid{position:absolute; inset:0; background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px); background-size:72px 72px; opacity:.10; -webkit-mask-image:radial-gradient(70% 60% at 50% 35%,#000,transparent); mask-image:radial-gradient(70% 60% at 50% 35%,#000,transparent)}
+  .hero-inner{position:relative; max-width:620px}
+  .logo-lg{margin:0 auto 22px; display:block}
+  .eyebrow{font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--acc); font-weight:600; margin-bottom:22px}
+  [dir="rtl"] .eyebrow{letter-spacing:.05em; text-transform:none}
+  .brand{font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(50px,10vw,88px); letter-spacing:.07em; margin:0 0 24px; line-height:1}
+  .tagline{font-size:clamp(17px,2.4vw,21px); line-height:1.6; max-width:520px; margin:0 auto 34px}
+  [dir="rtl"] .tagline{font-family:'Cairo',sans-serif}
+  .cta{background:var(--acc); color:#0B0F14; border:none; border-radius:2px; font-weight:600; letter-spacing:.02em; padding:15px 34px; font-size:15px; transition:.18s}
+  .cta:hover{background:var(--acc2)}
+  .cta.full{width:100%; margin-top:10px; padding:15px}
+  .seats{margin-top:54px}
+  .seat-meter{display:flex; gap:4px; justify-content:center; flex-wrap:wrap; max-width:440px; margin:0 auto 14px}
+  .tick{width:14px; height:3px; border-radius:2px; background:var(--line)}
+  .tick.on{background:var(--acc); box-shadow:0 0 8px rgba(91,140,255,.5)}
+  .seats-label{font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut)}
+  [dir="rtl"] .seats-label{letter-spacing:.02em; text-transform:none}
+
+  .band{max-width:1000px; margin:0 auto; padding:82px 28px}
+  .band.alt{border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .band-head{font-family:'Playfair Display',serif; font-size:15px; letter-spacing:.28em; text-transform:uppercase; color:var(--mut); text-align:center; margin-bottom:52px}
+  [dir="rtl"] .band-head{font-family:'Cairo',sans-serif; letter-spacing:.04em; text-transform:none; font-weight:700}
+  .vals{display:grid; grid-template-columns:repeat(3,1fr); gap:34px}
+  .val{text-align:center}
+  .val-mark{width:26px; height:1px; background:var(--acc); margin:0 auto 20px}
+  .val-t{font-family:'Playfair Display',serif; font-size:22px; margin:0 0 12px; font-weight:600}
+  [dir="rtl"] .val-t{font-family:'Cairo',sans-serif; font-weight:700}
+  .val-d{color:var(--mut); font-size:14.5px; line-height:1.65; margin:0}
+  .steps{display:flex; align-items:flex-start; justify-content:center}
+  .step{flex:1; max-width:250px; text-align:center; padding:0 18px}
+  .step-n{font-family:'Playfair Display',serif; font-size:26px; color:var(--acc); margin-bottom:14px}
+  .step-t{font-size:17px; margin:0 0 8px; font-weight:600}
+  .step-d{color:var(--mut); font-size:14px; line-height:1.6; margin:0}
+  .step-sep{width:60px; height:1px; background:var(--line); margin:34px -8px 0}
+  .founder-line{text-align:center; margin-top:52px}
+  .founder-line span{color:var(--acc2); font-size:13.5px; border:1px solid rgba(91,140,255,.25); background:rgba(91,140,255,.06); border-radius:100px; padding:11px 22px; display:inline-block}
+
+  .trust{display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:18px; padding:34px 28px; color:var(--mut); font-size:13px; letter-spacing:.04em}
+  .trust i{width:4px; height:4px; border-radius:50%; background:var(--dim); display:inline-block}
+  .foot{border-top:1px solid var(--line); padding:30px 28px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--dim); font-size:12.5px}
+  .foot .legal{color:var(--mut)}
+
+  .scrim{position:fixed; inset:0; background:rgba(4,7,10,.72); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); z-index:40; display:none; align-items:center; justify-content:center; padding:20px}
+  .scrim.open{display:flex}
+  .modal{position:relative; width:min(440px,100%); background:var(--ink2); border:1px solid var(--line); border-radius:5px; padding:34px}
+  .modal-x{position:absolute; top:14px; right:16px; background:none; border:none; color:var(--mut); font-size:24px; line-height:1}
+  [dir="rtl"] .modal-x{right:auto; left:16px}
+  .modal-title{font-family:'Playfair Display',serif; font-size:24px; margin:0 0 8px; font-weight:600}
+  [dir="rtl"] .modal-title{font-family:'Cairo',sans-serif; font-weight:700}
+  .modal-sub{color:var(--mut); font-size:14px; line-height:1.6; margin:0 0 22px}
+  .lbl{display:block; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--mut); margin:14px 0 7px; font-weight:500}
+  [dir="rtl"] .lbl{letter-spacing:0; text-transform:none}
+  .inp{width:100%; background:var(--ink); border:1px solid var(--line); color:var(--parch); border-radius:2px; padding:12px 14px; font-size:14.5px; font-family:inherit}
+  .inp:focus{outline:none; border-color:var(--acc)}
+  .inp::placeholder{color:#4f5b68}
+  .alert{background:rgba(224,115,107,.12); border:1px solid rgba(224,115,107,.4); color:#eaa79f; padding:10px 14px; border-radius:3px; font-size:13px; margin-bottom:6px; display:none}
+  .ok{text-align:center; padding:12px 0; display:none}
+  .ok-seal{width:52px; height:52px; border-radius:50%; border:1px solid var(--acc); color:var(--acc); display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 18px; box-shadow:0 0 16px rgba(91,140,255,.3)}
+  @media(max-width:760px){ .vals{grid-template-columns:1fr; gap:40px} .steps{flex-direction:column; align-items:center; gap:34px} .step-sep{display:none} .step{max-width:320px} .foot{justify-content:center; text-align:center} }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand-sm">
+      <svg width="24" height="24" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="34" stroke="#5B8CFF" stroke-width="5"/><ellipse cx="50" cy="50" rx="14" ry="34" stroke="#5B8CFF" stroke-width="3.6"/><line x1="16" y1="50" x2="84" y2="50" stroke="#5B8CFF" stroke-width="3.6"/><circle cx="70" cy="32" r="5.4" fill="#5B8CFF"/></svg>
+      SKY&nbsp;VANTAC
+    </span>
+    <span class="lang">
+      <span id="langFlag">🇫🇷</span>
+      <select id="langSelect" aria-label="Language">
+        <option value="fr">🇫🇷  Français</option>
+        <option value="en">🇬🇧  English</option>
+        <option value="ar">🇸🇦  العربية</option>
+      </select>
+      <span class="caret">▾</span>
+    </span>
+  </div>
+
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <svg class="logo-lg" width="62" height="62" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="34" stroke="#5B8CFF" stroke-width="5"/><ellipse cx="50" cy="50" rx="14" ry="34" stroke="#5B8CFF" stroke-width="3.6"/><line x1="16" y1="50" x2="84" y2="50" stroke="#5B8CFF" stroke-width="3.6"/><circle cx="70" cy="32" r="5.4" fill="#5B8CFF"/></svg>
+      <div class="eyebrow" data-i18n="eyebrow"></div>
+      <h1 class="brand">SKY&nbsp;VANTAC</h1>
+      <p class="tagline" data-i18n="tagline"></p>
+      <button class="cta" data-i18n="cta" onclick="openModal()"></button>
+      <div class="seats">
+        <div class="seat-meter" id="seatMeter" aria-hidden="true"></div>
+        <div class="seats-label" data-i18n="seats"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head" data-i18n="v_head"></div>
+    <div class="vals">
+      <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v1_t"></h3><p class="val-d" data-i18n="v1_d"></p></div>
+      <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v2_t"></h3><p class="val-d" data-i18n="v2_d"></p></div>
+      <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v3_t"></h3><p class="val-d" data-i18n="v3_d"></p></div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="band-head" data-i18n="a_head"></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><h3 class="step-t" data-i18n="a1_t"></h3><p class="step-d" data-i18n="a1_d"></p></div>
+      <span class="step-sep"></span>
+      <div class="step"><div class="step-n">02</div><h3 class="step-t" data-i18n="a2_t"></h3><p class="step-d" data-i18n="a2_d"></p></div>
+      <span class="step-sep"></span>
+      <div class="step"><div class="step-n">03</div><h3 class="step-t" data-i18n="a3_t"></h3><p class="step-d" data-i18n="a3_d"></p></div>
+    </div>
+    <div class="founder-line"><span data-i18n="founder"></span></div>
+  </section>
+
+  <div class="trust">
+    <span data-i18n="trust1"></span><i></i><span data-i18n="trust2"></span><i></i><span data-i18n="trust3"></span><i></i><span data-i18n="trust4"></span>
+  </div>
+
+  <footer class="foot">
+    <span data-i18n="foot"></span>
+    <span class="legal" data-i18n="legal"></span>
+  </footer>
+
+  <div class="scrim" id="scrim" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <button class="modal-x" onclick="closeModal()" aria-label="close">×</button>
+      <div id="formView">
+        <h2 class="modal-title" data-i18n="form_head"></h2>
+        <p class="modal-sub" data-i18n="form_sub"></p>
+        <div class="alert" id="formErr" data-i18n="f_err"></div>
+        <label class="lbl" data-i18n="f_email"></label>
+        <input class="inp" id="fEmail" placeholder="contact@societe.com" />
+        <label class="lbl" data-i18n="f_company"></label>
+        <input class="inp" id="fCompany" placeholder="—" />
+        <label class="lbl" data-i18n="f_country"></label>
+        <input class="inp" id="fCountry" placeholder="—" />
+        <button class="cta full" data-i18n="f_submit" onclick="submitForm()"></button>
+      </div>
+      <div class="ok" id="okView">
+        <div class="ok-seal">✓</div>
+        <h2 class="modal-title" data-i18n="ok_head"></h2>
+        <p class="modal-sub" data-i18n="ok_body"></p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var SEATS_TOTAL = 50, SEATS_TAKEN = 31, WAITLIST_POS = 47;
+  var I18N = {
+    fr:{ eyebrow:"Cercle privé · Import / Export · Sur admission", tagline:"Le cercle fermé où se négocie la marchandise que le marché ne voit pas.", cta:"Demander l'accès", seats:"Cohorte fondatrice — "+SEATS_TAKEN+" places attribuées sur "+SEATS_TOTAL,
+      v_head:"À l'intérieur", v1_t:"Marchandise exclusive", v1_d:"Des lots et des origines qui ne circulent pas sur le marché ouvert.", v2_t:"Réseau vérifié", v2_d:"Uniquement des professionnels, admis un par un.", v3_t:"Discrétion", v3_d:"Ce qui se traite ici ne sort pas d'ici.",
+      a_head:"L'admission", a1_t:"Candidature", a1_d:"Vous présentez votre activité.", a2_t:"Vérification", a2_d:"Chaque dossier est examiné.", a3_t:"Cohorte", a3_d:"Les admis rejoignent la prochaine cohorte.",
+      founder:"Tarif fondateur — 1 000 €/an, verrouillé à vie pour les premiers membres.",
+      trust1:"Admission vérifiée", trust2:"Membres professionnels", trust3:"Paiement sécurisé", trust4:"Données en Europe",
+      foot:"SKY VANTAC — Cercle privé import / export. Sur admission uniquement.", legal:"Mentions légales · Confidentialité",
+      form_head:"Rejoindre la liste d'attente", form_sub:"L'admission se fait par cohortes. Laissez vos coordonnées pour la prochaine.", f_email:"E-mail professionnel", f_company:"Raison sociale", f_country:"Pays d'activité", f_submit:"Demander l'accès", f_err:"Renseignez un e-mail et votre entreprise.",
+      ok_head:"Demande enregistrée", ok_body:"Vous êtes "+WAITLIST_POS+"ᵉ sur la liste. Nous revenons vers vous à l'ouverture de la prochaine cohorte." },
+    en:{ eyebrow:"Private circle · Import / Export · By admission", tagline:"The closed circle where the merchandise the market never sees is traded.", cta:"Request access", seats:"Founding cohort — "+SEATS_TAKEN+" of "+SEATS_TOTAL+" seats allocated",
+      v_head:"Inside", v1_t:"Exclusive merchandise", v1_d:"Lots and origins that never reach the open market.", v2_t:"Verified network", v2_d:"Professionals only, admitted one by one.", v3_t:"Discretion", v3_d:"What is dealt here stays here.",
+      a_head:"Admission", a1_t:"Application", a1_d:"You present your business.", a2_t:"Vetting", a2_d:"Every file is reviewed.", a3_t:"Cohort", a3_d:"Those admitted join the next cohort.",
+      founder:"Founding rate — €1,000/year, locked for life for the first members.",
+      trust1:"Vetted admission", trust2:"Professional members", trust3:"Secure payment", trust4:"Data hosted in Europe",
+      foot:"SKY VANTAC — Private import / export circle. By admission only.", legal:"Legal · Privacy",
+      form_head:"Join the waitlist", form_sub:"Admission runs in cohorts. Leave your details for the next one.", f_email:"Business email", f_company:"Company name", f_country:"Country of activity", f_submit:"Request access", f_err:"Enter an email and your company.",
+      ok_head:"Request received", ok_body:"You are number "+WAITLIST_POS+" on the list. We'll be in touch when the next cohort opens." },
+    ar:{ eyebrow:"دائرة خاصة · استيراد / تصدير · بالانضمام", tagline:"الدائرة المغلقة حيث تُتداول البضائع التي لا يراها السوق.", cta:"طلب الانضمام", seats:"الدفعة المؤسِّسة — "+SEATS_TAKEN+" من "+SEATS_TOTAL+" مقعدًا مخصّصة",
+      v_head:"في الداخل", v1_t:"بضائع حصرية", v1_d:"دفعات ومناشئ لا تتداول في السوق المفتوح.", v2_t:"شبكة موثوقة", v2_d:"محترفون فقط، يُقبلون واحدًا تلو الآخر.", v3_t:"خصوصية", v3_d:"ما يُتداول هنا يبقى هنا.",
+      a_head:"الانضمام", a1_t:"تقديم الطلب", a1_d:"تُقدِّم نشاطك التجاري.", a2_t:"التحقّق", a2_d:"يُراجَع كل ملف.", a3_t:"الدفعة", a3_d:"المقبولون ينضمون إلى الدفعة التالية.",
+      founder:"سعر المؤسِّسين — 1 000 €‏ سنويًا، مثبَّت مدى الحياة للأعضاء الأوائل.",
+      trust1:"انضمام موثَّق", trust2:"أعضاء محترفون", trust3:"دفع آمن", trust4:"بيانات مستضافة في أوروبا",
+      foot:"SKY VANTAC — دائرة خاصة للاستيراد والتصدير. بالانضمام فقط.", legal:"الشؤون القانونية · الخصوصية",
+      form_head:"الانضمام إلى قائمة الانتظار", form_sub:"يتم القبول على دفعات. اترك بياناتك للدفعة القادمة.", f_email:"البريد المهني", f_company:"الاسم التجاري", f_country:"بلد النشاط", f_submit:"طلب الانضمام", f_err:"أدخل بريدًا إلكترونيًا واسم شركتك.",
+      ok_head:"تم استلام الطلب", ok_body:"أنت رقم "+WAITLIST_POS+" في القائمة. سنتواصل معك عند فتح الدفعة القادمة." }
+  };
+  var FLAGS = { fr:"🇫🇷", en:"🇬🇧", ar:"🇸🇦" };
+
+  function setLang(lang){
+    var dict = I18N[lang] || I18N.fr;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n'); if(dict[k]!=null) el.textContent = dict[k];
+    });
+    document.documentElement.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+    document.getElementById('langFlag').textContent = FLAGS[lang];
+  }
+  function buildMeter(){
+    var m = document.getElementById('seatMeter'), html='';
+    for(var i=0;i<SEATS_TOTAL;i++){ html += '<span class="tick'+(i<SEATS_TAKEN?' on':'')+'"></span>'; }
+    m.innerHTML = html;
+  }
+  function openModal(){ document.getElementById('scrim').classList.add('open'); }
+  function closeModal(){
+    document.getElementById('scrim').classList.remove('open');
+    document.getElementById('formView').style.display='block';
+    document.getElementById('okView').style.display='none';
+    document.getElementById('formErr').style.display='none';
+  }
+  function submitForm(){
+    var email = document.getElementById('fEmail').value, company = document.getElementById('fCompany').value;
+    if(email.indexOf('@')<0 || !company.trim()){ document.getElementById('formErr').style.display='block'; return; }
+    document.getElementById('formView').style.display='none';
+    document.getElementById('okView').style.display='block';
+    /* NOTE : formulaire de démonstration. À connecter plus tard à un vrai stockage
+       (Supabase ou service e-mail) pour recevoir réellement les candidatures. */
+  }
+  document.getElementById('langSelect').addEventListener('change', function(e){ setLang(e.target.value); });
+  buildMeter(); setLang('fr');
+</script>
+</body>
+</html>
