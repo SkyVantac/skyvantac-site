@@ -33,10 +33,9 @@
   [dir="rtl"] .tagline{font-family:'Cairo',sans-serif}
   .cta{background:var(--acc); color:#0B0F14; border:none; border-radius:2px; font-weight:600; letter-spacing:.02em; padding:15px 34px; font-size:15px; transition:.18s}
   .cta:hover{background:var(--acc2)}
-  .cta.full{width:100%; margin-top:10px; padding:15px}
   .seats{margin-top:54px}
-  .seat-meter{display:flex; gap:4px; justify-content:center; flex-wrap:wrap; max-width:440px; margin:0 auto 14px}
-  .tick{width:14px; height:3px; border-radius:2px; background:var(--line)}
+  .seat-meter{display:grid; grid-template-columns:repeat(25,1fr); gap:6px 4px; max-width:446px; margin:0 auto 14px}
+  .tick{height:3px; border-radius:2px; background:var(--line)}
   .tick.on{background:var(--acc); box-shadow:0 0 8px rgba(91,140,255,.5)}
   .seats-label{font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut)}
   [dir="rtl"] .seats-label{letter-spacing:.02em; text-transform:none}
@@ -65,22 +64,43 @@
   .foot{border-top:1px solid var(--line); padding:30px 28px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--dim); font-size:12.5px}
   .foot .legal{color:var(--mut)}
 
-  .scrim{position:fixed; inset:0; background:rgba(4,7,10,.72); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); z-index:40; display:none; align-items:center; justify-content:center; padding:20px}
-  .scrim.open{display:flex}
-  .modal{position:relative; width:min(440px,100%); background:var(--ink2); border:1px solid var(--line); border-radius:5px; padding:34px}
-  .modal-x{position:absolute; top:14px; right:16px; background:none; border:none; color:var(--mut); font-size:24px; line-height:1}
-  [dir="rtl"] .modal-x{right:auto; left:16px}
-  .modal-title{font-family:'Playfair Display',serif; font-size:24px; margin:0 0 8px; font-weight:600}
-  [dir="rtl"] .modal-title{font-family:'Cairo',sans-serif; font-weight:700}
-  .modal-sub{color:var(--mut); font-size:14px; line-height:1.6; margin:0 0 22px}
-  .lbl{display:block; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--mut); margin:14px 0 7px; font-weight:500}
-  [dir="rtl"] .lbl{letter-spacing:0; text-transform:none}
-  .inp{width:100%; background:var(--ink); border:1px solid var(--line); color:var(--parch); border-radius:2px; padding:12px 14px; font-size:14.5px; font-family:inherit}
-  .inp:focus{outline:none; border-color:var(--acc)}
-  .inp::placeholder{color:#4f5b68}
-  .alert{background:rgba(224,115,107,.12); border:1px solid rgba(224,115,107,.4); color:#eaa79f; padding:10px 14px; border-radius:3px; font-size:13px; margin-bottom:6px; display:none}
-  .ok{text-align:center; padding:12px 0; display:none}
-  .ok-seal{width:52px; height:52px; border-radius:50%; border:1px solid var(--acc); color:var(--acc); display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 18px; box-shadow:0 0 16px rgba(91,140,255,.3)}
+  /* Animations discrètes */
+  @keyframes svMeridien{0%{transform:scaleX(1)}50%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+  @keyframes svPulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes svHalo{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.75;transform:scale(1.15)}}
+  @keyframes svGrille{from{background-position:0 0,0 0}to{background-position:0 72px,72px 0}}
+  @keyframes svApparition{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes svTick{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .globe .meridien{transform-box:fill-box; transform-origin:center; animation:svMeridien 9s ease-in-out infinite}
+  .globe .meridien-2{animation-delay:-4.5s}
+  .globe .satellite{animation:svPulse 3.2s ease-in-out infinite}
+  .logo-wrap{position:relative; width:62px; height:62px; margin:0 auto 22px}
+  .logo-wrap .halo{position:absolute; inset:-22px; border-radius:50%; background:radial-gradient(circle,rgba(91,140,255,.35),transparent 70%); animation:svHalo 6s ease-in-out infinite}
+  .logo-wrap .logo-lg{position:relative; margin:0}
+  .hero-grid{animation:svGrille 24s linear infinite}
+  .hero-inner > *{animation:svApparition .9s cubic-bezier(.2,.7,.2,1) both}
+  .hero-inner > *:nth-child(2){animation-delay:.1s}
+  .hero-inner > *:nth-child(3){animation-delay:.2s}
+  .hero-inner > *:nth-child(4){animation-delay:.35s}
+  .hero-inner > *:nth-child(5){animation-delay:.5s}
+  .hero-inner > *:nth-child(6){animation-delay:.65s}
+  .tick.on{transform-origin:left; animation:svTick .5s ease-out both}
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.visible{opacity:1; transform:none}
+  .val, .step{transition:transform .35s ease}
+  .val:hover, .step:hover{transform:translateY(-4px)}
+  .cta{display:inline-block; text-decoration:none}
+  .cta-2{display:inline-block; margin-left:12px; border:1px solid var(--line); color:var(--parch); border-radius:2px; padding:14px 30px; font-size:15px; text-decoration:none; transition:.18s}
+  .cta-2:hover{border-color:var(--acc)}
+  [dir="rtl"] .cta-2{margin-left:0; margin-right:12px}
+  .foot a{color:var(--mut); text-decoration:none}
+  .foot a:hover{color:var(--parch)}
+  @media(prefers-reduced-motion:reduce){
+    .globe .meridien,.globe .satellite,.logo-wrap .halo,.hero-grid,.hero-inner > *,.tick.on{animation:none}
+    .reveal{opacity:1; transform:none; transition:none}
+    .val:hover,.step:hover{transform:none}
+  }
+  @media(max-width:520px){ .cta-2{margin:12px 0 0} [dir="rtl"] .cta-2{margin:12px 0 0} }
   @media(max-width:760px){ .vals{grid-template-columns:1fr; gap:40px} .steps{flex-direction:column; align-items:center; gap:34px} .step-sep{display:none} .step{max-width:320px} .foot{justify-content:center; text-align:center} }
 </style>
 </head>
@@ -104,12 +124,12 @@
   <section class="hero">
     <div class="hero-grid"></div>
     <div class="hero-inner">
-      <svg class="logo-lg" width="62" height="62" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="34" stroke="#5B8CFF" stroke-width="5"/><ellipse cx="50" cy="50" rx="14" ry="34" stroke="#5B8CFF" stroke-width="3.6"/><line x1="16" y1="50" x2="84" y2="50" stroke="#5B8CFF" stroke-width="3.6"/><circle cx="70" cy="32" r="5.4" fill="#5B8CFF"/></svg>
+      <div class="logo-wrap"><span class="halo"></span><svg class="logo-lg globe" width="62" height="62" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="34" stroke="#5B8CFF" stroke-width="5"/><ellipse class="meridien" cx="50" cy="50" rx="14" ry="34" stroke="#5B8CFF" stroke-width="3.6"/><ellipse class="meridien meridien-2" cx="50" cy="50" rx="14" ry="34" stroke="#5B8CFF" stroke-opacity=".35" stroke-width="2.4"/><line x1="16" y1="50" x2="84" y2="50" stroke="#5B8CFF" stroke-width="3.6"/><circle class="satellite" cx="70" cy="32" r="5.4" fill="#5B8CFF"/></svg></div>
       <div class="eyebrow" data-i18n="eyebrow"></div>
       <h1 class="brand">SKY&nbsp;VANTAC</h1>
       <p class="tagline" data-i18n="tagline"></p>
-      <button class="cta" data-i18n="cta" onclick="openModal()"></button>
-      <div class="seats">
+      <div><a class="cta" data-i18n="cta" href="https://app.skyvantac.com/inscription"></a><a class="cta-2" data-i18n="member" href="https://app.skyvantac.com/connexion"></a></div>
+      <div class="seats" id="seats" hidden>
         <div class="seat-meter" id="seatMeter" aria-hidden="true"></div>
         <div class="seats-label" data-i18n="seats"></div>
       </div>
@@ -117,8 +137,8 @@
   </section>
 
   <section class="band">
-    <div class="band-head" data-i18n="v_head"></div>
-    <div class="vals">
+    <div class="band-head reveal" data-i18n="v_head"></div>
+    <div class="vals reveal">
       <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v1_t"></h3><p class="val-d" data-i18n="v1_d"></p></div>
       <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v2_t"></h3><p class="val-d" data-i18n="v2_d"></p></div>
       <div class="val"><div class="val-mark"></div><h3 class="val-t" data-i18n="v3_t"></h3><p class="val-d" data-i18n="v3_d"></p></div>
@@ -126,15 +146,15 @@
   </section>
 
   <section class="band alt">
-    <div class="band-head" data-i18n="a_head"></div>
-    <div class="steps">
+    <div class="band-head reveal" data-i18n="a_head"></div>
+    <div class="steps reveal">
       <div class="step"><div class="step-n">01</div><h3 class="step-t" data-i18n="a1_t"></h3><p class="step-d" data-i18n="a1_d"></p></div>
       <span class="step-sep"></span>
       <div class="step"><div class="step-n">02</div><h3 class="step-t" data-i18n="a2_t"></h3><p class="step-d" data-i18n="a2_d"></p></div>
       <span class="step-sep"></span>
       <div class="step"><div class="step-n">03</div><h3 class="step-t" data-i18n="a3_t"></h3><p class="step-d" data-i18n="a3_d"></p></div>
     </div>
-    <div class="founder-line"><span data-i18n="founder"></span></div>
+    <div class="founder-line reveal"><span data-i18n="founder"></span></div>
   </section>
 
   <div class="trust">
@@ -143,93 +163,79 @@
 
   <footer class="foot">
     <span data-i18n="foot"></span>
-    <span class="legal" data-i18n="legal"></span>
+    <span class="legal"><a href="https://app.skyvantac.com/mentions-legales" data-i18n="l_mentions"></a> · <a href="https://app.skyvantac.com/conditions-generales" data-i18n="l_cgv"></a> · <a href="https://app.skyvantac.com/confidentialite" data-i18n="l_privacy"></a></span>
   </footer>
 
-  <div class="scrim" id="scrim" onclick="if(event.target===this)closeModal()">
-    <div class="modal">
-      <button class="modal-x" onclick="closeModal()" aria-label="close">×</button>
-      <div id="formView">
-        <h2 class="modal-title" data-i18n="form_head"></h2>
-        <p class="modal-sub" data-i18n="form_sub"></p>
-        <div class="alert" id="formErr" data-i18n="f_err"></div>
-        <label class="lbl" data-i18n="f_email"></label>
-        <input class="inp" id="fEmail" placeholder="contact@societe.com" />
-        <label class="lbl" data-i18n="f_company"></label>
-        <input class="inp" id="fCompany" placeholder="—" />
-        <label class="lbl" data-i18n="f_country"></label>
-        <input class="inp" id="fCountry" placeholder="—" />
-        <button class="cta full" data-i18n="f_submit" onclick="submitForm()"></button>
-      </div>
-      <div class="ok" id="okView">
-        <div class="ok-seal">✓</div>
-        <h2 class="modal-title" data-i18n="ok_head"></h2>
-        <p class="modal-sub" data-i18n="ok_body"></p>
-      </div>
-    </div>
-  </div>
-
 <script>
-  var SEATS_TOTAL = 50, SEATS_TAKEN = 31, WAITLIST_POS = 47;
+  // Compteur réel, fourni par l'application (aucune identité, juste un nombre).
+  var SEATS_TOTAL = 50, SEATS_TAKEN = null, SEATS_API = "https://app.skyvantac.com/api/places";
   var I18N = {
-    fr:{ eyebrow:"Cercle privé · Import / Export · Sur admission", tagline:"Le cercle fermé où se négocie la marchandise que le marché ne voit pas.", cta:"Demander l'accès", seats:"Cohorte fondatrice — "+SEATS_TAKEN+" places attribuées sur "+SEATS_TOTAL,
+    fr:{ eyebrow:"Cercle privé · Import / Export · Sur admission", tagline:"Le cercle fermé où se négocie la marchandise que le marché ne voit pas.", cta:"Demander l'accès", seats:function(r){ return r>0 ? "Cohorte fondatrice — "+r+" place"+(r>1?"s":"")+" restante"+(r>1?"s":"")+" sur "+SEATS_TOTAL : "Cohorte fondatrice complète"; }, member:"Espace membre",
       v_head:"À l'intérieur", v1_t:"Marchandise exclusive", v1_d:"Des lots et des origines qui ne circulent pas sur le marché ouvert.", v2_t:"Réseau vérifié", v2_d:"Uniquement des professionnels, admis un par un.", v3_t:"Discrétion", v3_d:"Ce qui se traite ici ne sort pas d'ici.",
       a_head:"L'admission", a1_t:"Candidature", a1_d:"Vous présentez votre activité.", a2_t:"Vérification", a2_d:"Chaque dossier est examiné.", a3_t:"Cohorte", a3_d:"Les admis rejoignent la prochaine cohorte.",
-      founder:"Tarif fondateur — 1 000 €/an, verrouillé à vie pour les premiers membres.",
+      founder:"Tarif fondateur — 1 000 € TTC/an, garanti tant que vous restez membre.",
       trust1:"Admission vérifiée", trust2:"Membres professionnels", trust3:"Paiement sécurisé", trust4:"Données en Europe",
-      foot:"SKY VANTAC — Cercle privé import / export. Sur admission uniquement.", legal:"Mentions légales · Confidentialité",
-      form_head:"Rejoindre la liste d'attente", form_sub:"L'admission se fait par cohortes. Laissez vos coordonnées pour la prochaine.", f_email:"E-mail professionnel", f_company:"Raison sociale", f_country:"Pays d'activité", f_submit:"Demander l'accès", f_err:"Renseignez un e-mail et votre entreprise.",
-      ok_head:"Demande enregistrée", ok_body:"Vous êtes "+WAITLIST_POS+"ᵉ sur la liste. Nous revenons vers vous à l'ouverture de la prochaine cohorte." },
-    en:{ eyebrow:"Private circle · Import / Export · By admission", tagline:"The closed circle where the merchandise the market never sees is traded.", cta:"Request access", seats:"Founding cohort — "+SEATS_TAKEN+" of "+SEATS_TOTAL+" seats allocated",
+      foot:"SKY VANTAC — Cercle privé import / export. Sur admission uniquement.", l_mentions:"Mentions légales", l_cgv:"Conditions générales", l_privacy:"Confidentialité", },
+    en:{ eyebrow:"Private circle · Import / Export · By admission", tagline:"The closed circle where the merchandise the market never sees is traded.", cta:"Request access", seats:function(r){ return r>0 ? "Founding cohort — "+r+" of "+SEATS_TOTAL+" seats remaining" : "Founding cohort full"; }, member:"Member area",
       v_head:"Inside", v1_t:"Exclusive merchandise", v1_d:"Lots and origins that never reach the open market.", v2_t:"Verified network", v2_d:"Professionals only, admitted one by one.", v3_t:"Discretion", v3_d:"What is dealt here stays here.",
       a_head:"Admission", a1_t:"Application", a1_d:"You present your business.", a2_t:"Vetting", a2_d:"Every file is reviewed.", a3_t:"Cohort", a3_d:"Those admitted join the next cohort.",
-      founder:"Founding rate — €1,000/year, locked for life for the first members.",
+      founder:"Founding rate — €1,000/year incl. VAT, guaranteed for as long as you remain a member.",
       trust1:"Vetted admission", trust2:"Professional members", trust3:"Secure payment", trust4:"Data hosted in Europe",
-      foot:"SKY VANTAC — Private import / export circle. By admission only.", legal:"Legal · Privacy",
-      form_head:"Join the waitlist", form_sub:"Admission runs in cohorts. Leave your details for the next one.", f_email:"Business email", f_company:"Company name", f_country:"Country of activity", f_submit:"Request access", f_err:"Enter an email and your company.",
-      ok_head:"Request received", ok_body:"You are number "+WAITLIST_POS+" on the list. We'll be in touch when the next cohort opens." },
-    ar:{ eyebrow:"دائرة خاصة · استيراد / تصدير · بالانضمام", tagline:"الدائرة المغلقة حيث تُتداول البضائع التي لا يراها السوق.", cta:"طلب الانضمام", seats:"الدفعة المؤسِّسة — "+SEATS_TAKEN+" من "+SEATS_TOTAL+" مقعدًا مخصّصة",
+      foot:"SKY VANTAC — Private import / export circle. By admission only.", l_mentions:"Legal notice", l_cgv:"Terms", l_privacy:"Privacy", },
+    ar:{ eyebrow:"دائرة خاصة · استيراد / تصدير · بالانضمام", tagline:"الدائرة المغلقة حيث تُتداول البضائع التي لا يراها السوق.", cta:"طلب الانضمام", seats:function(r){ return r>0 ? "الدفعة المؤسِّسة — "+r+" مقعدًا متبقيًا من "+SEATS_TOTAL : "اكتملت الدفعة المؤسِّسة"; }, member:"مساحة الأعضاء",
       v_head:"في الداخل", v1_t:"بضائع حصرية", v1_d:"دفعات ومناشئ لا تتداول في السوق المفتوح.", v2_t:"شبكة موثوقة", v2_d:"محترفون فقط، يُقبلون واحدًا تلو الآخر.", v3_t:"خصوصية", v3_d:"ما يُتداول هنا يبقى هنا.",
       a_head:"الانضمام", a1_t:"تقديم الطلب", a1_d:"تُقدِّم نشاطك التجاري.", a2_t:"التحقّق", a2_d:"يُراجَع كل ملف.", a3_t:"الدفعة", a3_d:"المقبولون ينضمون إلى الدفعة التالية.",
-      founder:"سعر المؤسِّسين — 1 000 €‏ سنويًا، مثبَّت مدى الحياة للأعضاء الأوائل.",
+      founder:"سعر المؤسِّسين — 1 000 €‏ سنويًا شاملة الضريبة، مضمون ما دمت عضوًا.",
       trust1:"انضمام موثَّق", trust2:"أعضاء محترفون", trust3:"دفع آمن", trust4:"بيانات مستضافة في أوروبا",
-      foot:"SKY VANTAC — دائرة خاصة للاستيراد والتصدير. بالانضمام فقط.", legal:"الشؤون القانونية · الخصوصية",
-      form_head:"الانضمام إلى قائمة الانتظار", form_sub:"يتم القبول على دفعات. اترك بياناتك للدفعة القادمة.", f_email:"البريد المهني", f_company:"الاسم التجاري", f_country:"بلد النشاط", f_submit:"طلب الانضمام", f_err:"أدخل بريدًا إلكترونيًا واسم شركتك.",
-      ok_head:"تم استلام الطلب", ok_body:"أنت رقم "+WAITLIST_POS+" في القائمة. سنتواصل معك عند فتح الدفعة القادمة." }
+      foot:"SKY VANTAC — دائرة خاصة للاستيراد والتصدير. بالانضمام فقط.", l_mentions:"الإشعارات القانونية", l_cgv:"الشروط العامة", l_privacy:"الخصوصية", }
   };
   var FLAGS = { fr:"🇫🇷", en:"🇬🇧", ar:"🇸🇦" };
 
+  var LANG = 'fr';
   function setLang(lang){
-    var dict = I18N[lang] || I18N.fr;
+    LANG = I18N[lang] ? lang : 'fr';
+    var dict = I18N[LANG];
     document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if(dict[k]!=null) el.textContent = dict[k];
+      var k = el.getAttribute('data-i18n'), v = dict[k];
+      if(typeof v === 'function') v = SEATS_TAKEN === null ? null : v(SEATS_TOTAL - SEATS_TAKEN);
+      if(v != null) el.textContent = v;
     });
-    document.documentElement.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
-    document.documentElement.setAttribute('lang', lang);
-    document.getElementById('langFlag').textContent = FLAGS[lang];
+    document.documentElement.setAttribute('dir', LANG==='ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', LANG);
+    document.getElementById('langFlag').textContent = FLAGS[LANG];
   }
   function buildMeter(){
     var m = document.getElementById('seatMeter'), html='';
-    for(var i=0;i<SEATS_TOTAL;i++){ html += '<span class="tick'+(i<SEATS_TAKEN?' on':'')+'"></span>'; }
+    for(var i=0;i<SEATS_TOTAL;i++){
+      html += i<SEATS_TAKEN
+        ? '<span class="tick on" style="animation-delay:'+(0.2+i*0.04).toFixed(2)+'s"></span>'
+        : '<span class="tick"></span>';
+    }
     m.innerHTML = html;
   }
-  function openModal(){ document.getElementById('scrim').classList.add('open'); }
-  function closeModal(){
-    document.getElementById('scrim').classList.remove('open');
-    document.getElementById('formView').style.display='block';
-    document.getElementById('okView').style.display='none';
-    document.getElementById('formErr').style.display='none';
+  // Le compteur ne s'affiche que s'il est réel : si l'application ne
+  // répond pas, la ligne reste masquée plutôt que d'afficher un chiffre inventé.
+  function loadSeats(){
+    if(!window.fetch) return;
+    fetch(SEATS_API).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+      if(!d || typeof d.attribuees !== 'number') return;
+      SEATS_TOTAL = d.total || SEATS_TOTAL;
+      SEATS_TAKEN = Math.min(d.attribuees, SEATS_TOTAL);
+      buildMeter(); setLang(LANG);
+      document.getElementById('seats').hidden = false;
+    }).catch(function(){});
   }
-  function submitForm(){
-    var email = document.getElementById('fEmail').value, company = document.getElementById('fCompany').value;
-    if(email.indexOf('@')<0 || !company.trim()){ document.getElementById('formErr').style.display='block'; return; }
-    document.getElementById('formView').style.display='none';
-    document.getElementById('okView').style.display='block';
-    /* NOTE : formulaire de démonstration. À connecter plus tard à un vrai stockage
-       (Supabase ou service e-mail) pour recevoir réellement les candidatures. */
+  // Apparition des sections au défilement.
+  function reveal(){
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){ els.forEach(function(e){ e.classList.add('visible'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: .15 });
+    els.forEach(function(e){ io.observe(e); });
   }
   document.getElementById('langSelect').addEventListener('change', function(e){ setLang(e.target.value); });
-  buildMeter(); setLang('fr');
+  setLang('fr'); reveal(); loadSeats();
 </script>
 </body>
 </html>
