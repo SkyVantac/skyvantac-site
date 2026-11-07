@@ -168,24 +168,24 @@
 
 <script>
   // Compteur réel, fourni par l'application (aucune identité, juste un nombre).
-  var SEATS_TOTAL = 50, SEATS_TAKEN = null, SEATS_API = "https://app.skyvantac.com/api/places";
+  var SEATS_TOTAL = 100, SEATS_TAKEN = null, SEATS_API = "https://app.skyvantac.com/api/places";
   var I18N = {
-    fr:{ eyebrow:"Cercle privé · Import / Export · Sur admission", tagline:"Le cercle fermé où se négocie la marchandise que le marché ne voit pas.", cta:"Demander l'accès", seats:function(r){ return r>0 ? "Cohorte fondatrice — "+r+" place"+(r>1?"s":"")+" restante"+(r>1?"s":"")+" sur "+SEATS_TOTAL : "Cohorte fondatrice complète"; }, member:"Espace membre",
+    fr:{ eyebrow:"Cercle privé · Import / Export · Sur admission", tagline:"Le cercle fermé où se négocie la marchandise que le marché ne voit pas.", cta:"Demander l'accès", seats:function(r){ return r>0 ? "Tarif fondateur — "+r+" place"+(r>1?"s":"")+" restante"+(r>1?"s":"")+" sur "+SEATS_TOTAL : "Cohorte fondatrice complète"; }, member:"Espace membre",
       v_head:"À l'intérieur", v1_t:"Marchandise exclusive", v1_d:"Des lots et des origines qui ne circulent pas sur le marché ouvert.", v2_t:"Réseau vérifié", v2_d:"Uniquement des professionnels, admis un par un.", v3_t:"Discrétion", v3_d:"Ce qui se traite ici ne sort pas d'ici.",
       a_head:"L'admission", a1_t:"Candidature", a1_d:"Vous présentez votre activité.", a2_t:"Vérification", a2_d:"Chaque dossier est examiné.", a3_t:"Cohorte", a3_d:"Les admis rejoignent la prochaine cohorte.",
-      founder:"Tarif fondateur — 1 000 € TTC/an, garanti tant que vous restez membre.",
+      founder:"Tarif fondateur — 1 000 € TTC/an pour les 100 premiers membres, garanti tant que vous restez membre. Puis 1 899 € TTC/an.",
       trust1:"Admission vérifiée", trust2:"Membres professionnels", trust3:"Paiement sécurisé", trust4:"Données en Europe",
       foot:"SKY VANTAC — Cercle privé import / export. Sur admission uniquement.", l_mentions:"Mentions légales", l_cgv:"Conditions générales", l_privacy:"Confidentialité", },
-    en:{ eyebrow:"Private circle · Import / Export · By admission", tagline:"The closed circle where the merchandise the market never sees is traded.", cta:"Request access", seats:function(r){ return r>0 ? "Founding cohort — "+r+" of "+SEATS_TOTAL+" seats remaining" : "Founding cohort full"; }, member:"Member area",
+    en:{ eyebrow:"Private circle · Import / Export · By admission", tagline:"The closed circle where the merchandise the market never sees is traded.", cta:"Request access", seats:function(r){ return r>0 ? "Founding rate — "+r+" of "+SEATS_TOTAL+" places remaining" : "Founding cohort full"; }, member:"Member area",
       v_head:"Inside", v1_t:"Exclusive merchandise", v1_d:"Lots and origins that never reach the open market.", v2_t:"Verified network", v2_d:"Professionals only, admitted one by one.", v3_t:"Discretion", v3_d:"What is dealt here stays here.",
       a_head:"Admission", a1_t:"Application", a1_d:"You present your business.", a2_t:"Vetting", a2_d:"Every file is reviewed.", a3_t:"Cohort", a3_d:"Those admitted join the next cohort.",
-      founder:"Founding rate — €1,000/year incl. VAT, guaranteed for as long as you remain a member.",
+      founder:"Founding rate — €1,000/year incl. VAT for the first 100 members, guaranteed for as long as you remain a member. Then €1,899/year.",
       trust1:"Vetted admission", trust2:"Professional members", trust3:"Secure payment", trust4:"Data hosted in Europe",
       foot:"SKY VANTAC — Private import / export circle. By admission only.", l_mentions:"Legal notice", l_cgv:"Terms", l_privacy:"Privacy", },
-    ar:{ eyebrow:"دائرة خاصة · استيراد / تصدير · بالانضمام", tagline:"الدائرة المغلقة حيث تُتداول البضائع التي لا يراها السوق.", cta:"طلب الانضمام", seats:function(r){ return r>0 ? "الدفعة المؤسِّسة — "+r+" مقعدًا متبقيًا من "+SEATS_TOTAL : "اكتملت الدفعة المؤسِّسة"; }, member:"مساحة الأعضاء",
+    ar:{ eyebrow:"دائرة خاصة · استيراد / تصدير · بالانضمام", tagline:"الدائرة المغلقة حيث تُتداول البضائع التي لا يراها السوق.", cta:"طلب الانضمام", seats:function(r){ return r>0 ? "سعر المؤسِّسين — "+r+" مقعدًا متبقيًا من "+SEATS_TOTAL : "اكتملت الدفعة المؤسِّسة"; }, member:"مساحة الأعضاء",
       v_head:"في الداخل", v1_t:"بضائع حصرية", v1_d:"دفعات ومناشئ لا تتداول في السوق المفتوح.", v2_t:"شبكة موثوقة", v2_d:"محترفون فقط، يُقبلون واحدًا تلو الآخر.", v3_t:"خصوصية", v3_d:"ما يُتداول هنا يبقى هنا.",
       a_head:"الانضمام", a1_t:"تقديم الطلب", a1_d:"تُقدِّم نشاطك التجاري.", a2_t:"التحقّق", a2_d:"يُراجَع كل ملف.", a3_t:"الدفعة", a3_d:"المقبولون ينضمون إلى الدفعة التالية.",
-      founder:"سعر المؤسِّسين — 1 000 €‏ سنويًا شاملة الضريبة، مضمون ما دمت عضوًا.",
+      founder:"سعر المؤسِّسين — 1 000 €‏ سنويًا شاملة الضريبة لأول 100 عضو، مضمون ما دمت عضوًا. ثم 1 899 €‏ سنويًا.",
       trust1:"انضمام موثَّق", trust2:"أعضاء محترفون", trust3:"دفع آمن", trust4:"بيانات مستضافة في أوروبا",
       foot:"SKY VANTAC — دائرة خاصة للاستيراد والتصدير. بالانضمام فقط.", l_mentions:"الإشعارات القانونية", l_cgv:"الشروط العامة", l_privacy:"الخصوصية", }
   };
