@@ -152,6 +152,8 @@
           <select id="langue" aria-label="Langue / Language">
             <option value="fr">Français</option>
             <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
             <option value="ar">العربية</option>
           </select>
           <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
@@ -235,7 +237,7 @@
           <circle cx="100" cy="100" r="96" fill="none" stroke="#D6BE8A" stroke-opacity=".35"/>
           <circle cx="100" cy="100" r="90" fill="none" stroke="#D6BE8A" stroke-opacity=".7"/>
           <circle cx="100" cy="100" r="66" fill="none" stroke="#D6BE8A" stroke-opacity=".5"/>
-          <g class="anneau"><text><textPath href="#cercle-sceau" startOffset="0" textLength="486" lengthAdjust="spacing">MEMBRE FONDATEUR · SKY VANTAC · MEMBRE FONDATEUR · SKY VANTAC ·</textPath></text></g>
+          <g class="anneau"><text><textPath href="#cercle-sceau" startOffset="0" textLength="486" lengthAdjust="spacing" data-i18n="sceau">MEMBRE FONDATEUR · SKY VANTAC · MEMBRE FONDATEUR · SKY VANTAC ·</textPath></text></g>
           <g transform="translate(62 62) scale(.76)" fill="none" stroke="#D6BE8A">
             <circle cx="50" cy="50" r="34" stroke-width="4"/><ellipse cx="50" cy="50" rx="14" ry="34" stroke-width="3"/><line x1="16" y1="50" x2="84" y2="50" stroke-width="3"/><circle cx="70" cy="32" r="5" fill="#D6BE8A" stroke="none"/>
           </g>
@@ -514,6 +516,7 @@ function svGlobe(canvas, opts) {
   var places = null; // { total, attribuees, restantes }
   var TEXTES = {
     fr:{
+      sceau:"MEMBRE FONDATEUR · SKY VANTAC · MEMBRE FONDATEUR · SKY VANTAC ·",
       membre:"Espace membre",
       chapeau:"Cercle privé de négoce import / export, sur admission",
       accroche:"Les lots qui ne passent pas par le marché ouvert se négocient ici, entre professionnels admis un par un.",
@@ -537,6 +540,7 @@ function svGlobe(canvas, opts) {
       l1:"Mentions légales", l2:"Conditions générales", l3:"Confidentialité"
     },
     en:{
+      sceau:"FOUNDING MEMBER · SKY VANTAC · FOUNDING MEMBER · SKY VANTAC ·",
       membre:"Member area",
       chapeau:"Private import / export trading circle, by admission",
       accroche:"The lots that never reach the open market are negotiated here, between professionals admitted one by one.",
@@ -559,7 +563,56 @@ function svGlobe(canvas, opts) {
       pied:"© 2026 Oryka Corporation — SKY VANTAC",
       l1:"Legal notice", l2:"Terms", l3:"Privacy"
     },
+    de:{
+      sceau:"GRÜNDUNGSMITGLIED · SKY VANTAC · GRÜNDUNGSMITGLIED · SKY VANTAC ·",
+      membre:"Mitgliederbereich",
+      chapeau:"Privater Import- / Export-Handelskreis, nur auf Zulassung",
+      accroche:"Ware, die nie auf den offenen Markt gelangt, wird hier verhandelt – zwischen Fachleuten, die einzeln zugelassen werden.",
+      cta:"Zugang beantragen", cta2:"So werden Sie Mitglied",
+      places:function(p){ return p.restantes > 0 ? "Gründertarif: <strong>"+p.restantes+(p.restantes>1?" Plätze":" Platz")+" frei</strong> von "+p.total : "Gründerkreis vollständig"; },
+      g_titre:"Was Sie schützt",
+      g_intro:"Sie handeln große Mengen mit Unbekannten. Hier ist alles darauf ausgelegt, dass das nicht mehr so ist.",
+      g1_t:"Verschlüsselte Zahlung", g1_d:"Die Zahlung läuft über Stripe. SKY VANTAC speichert keine Kartendaten.",
+      g2_t:"Erstattung bei Ablehnung", g2_d:"Ihre Bewerbung wird nach der Zahlung geprüft. Wird sie abgelehnt, erhalten Sie den vollen Betrag zurück.",
+      g3_t:"Kein Mitgliederverzeichnis", g3_d:"Niemand kann die Mitgliederliste durchsuchen. Eine Identität erscheint nur in einem Austausch, den Sie selbst eröffnet haben.",
+      g4_t:"Fotos mit Ihrer Kennung", g4_d:"Jedes angezeigte Foto trägt ein Wasserzeichen des Mitglieds, das es ansieht. Ein weitergegebenes Bild lässt sich auf sein Konto zurückführen.",
+      a_titre:"So werden Sie Mitglied",
+      a_intro:"Jede Bewerbung wird von einem Menschen geprüft, nicht von einem Algorithmus.",
+      a1_t:"Bewerbung", a1_d:"Erstellen Sie Ihr Konto und stellen Sie Ihr Unternehmen vor.",
+      a2_t:"Zahlung", a2_d:"Bezahlen Sie die Jahresmitgliedschaft sicher per Karte.",
+      a3_t:"Prüfung", a3_d:"Ihre Unterlagen werden persönlich geprüft. Antwort innerhalb von 24\u00a0Stunden.",
+      a4_t:"Zugang", a4_d:"Sehen Sie die Angebote ein und verhandeln Sie direkt mit den Verkäufern.",
+      f_titre:"Gründertarif", f_prix:"1.000 €", f_unite:"pro Jahr inkl. MwSt.",
+      f_apres:"Den ersten 100 zugelassenen Mitgliedern vorbehalten und garantiert, solange Ihre Mitgliedschaft aktiv bleibt. Danach kostet die Mitgliedschaft 1.490 € pro Jahr inkl. MwSt.",
+      pied:"© 2026 Oryka Corporation — SKY VANTAC",
+      l1:"Impressum", l2:"AGB", l3:"Datenschutz"
+    },
+    es:{
+      sceau:"MIEMBRO FUNDADOR · SKY VANTAC · MIEMBRO FUNDADOR · SKY VANTAC ·",
+      membre:"Área de miembros",
+      chapeau:"Círculo privado de negocio de importación / exportación, solo por admisión",
+      accroche:"Los lotes que nunca llegan al mercado abierto se negocian aquí, entre profesionales admitidos uno a uno.",
+      cta:"Solicitar acceso", cta2:"Cómo entrar",
+      places:function(p){ return p.restantes > 0 ? "Tarifa fundador: <strong>"+p.restantes+(p.restantes>1?" plazas disponibles":" plaza disponible")+"</strong> de "+p.total : "Grupo fundador completo"; },
+      g_titre:"Lo que le protege",
+      g_intro:"Usted negocia grandes volúmenes con desconocidos. Aquí todo está pensado para que eso deje de ser así.",
+      g1_t:"Pago cifrado", g1_d:"El pago se realiza con Stripe. SKY VANTAC nunca guarda los datos de su tarjeta.",
+      g2_t:"Reembolso si no es admitido", g2_d:"Su solicitud se examina tras el pago. Si no es aceptada, se le reembolsa íntegramente.",
+      g3_t:"Sin directorio", g3_d:"Nadie puede consultar la lista de miembros. Una identidad solo aparece en un intercambio que usted haya decidido abrir.",
+      g4_t:"Fotos marcadas con su nombre", g4_d:"Cada foto mostrada lleva una marca de agua propia del miembro que la consulta. Una imagen filtrada permite llegar hasta su cuenta.",
+      a_titre:"Cómo entrar",
+      a_intro:"Cada solicitud la examina una persona, no un algoritmo.",
+      a1_t:"Solicitud", a1_d:"Cree su cuenta y presente su actividad.",
+      a2_t:"Pago", a2_d:"Abone la membresía anual con tarjeta, de forma segura.",
+      a3_t:"Revisión", a3_d:"Su expediente se estudia personalmente. Respuesta en 24\u00a0horas.",
+      a4_t:"Acceso", a4_d:"Consulte las ofertas y negocie directamente con los vendedores.",
+      f_titre:"Tarifa fundador", f_prix:"1.000 €", f_unite:"al año, IVA incl.",
+      f_apres:"Reservada a los 100 primeros miembros admitidos y garantizada mientras su membresía siga activa. Después, la membresía pasa a 1.490 € al año, IVA incl.",
+      pied:"© 2026 Oryka Corporation — SKY VANTAC",
+      l1:"Aviso legal", l2:"Condiciones generales", l3:"Privacidad"
+    },
     ar:{
+      sceau:"عضو مؤسِّس · SKY VANTAC · عضو مؤسِّس · SKY VANTAC ·",
       membre:"مساحة الأعضاء",
       chapeau:"دائرة خاصة لتجارة الاستيراد والتصدير، بالقبول فقط",
       accroche:"الدفعات التي لا تصل أبدًا إلى السوق المفتوح تُتفاوض هنا، بين محترفين يُقبلون واحدًا تلو الآخر.",
@@ -600,6 +653,10 @@ function svGlobe(canvas, opts) {
     document.documentElement.dir = langue === 'ar' ? 'rtl' : 'ltr';
     document.getElementById('langue').value = langue;
     try { localStorage.setItem('sv-langue', langue); } catch(e){}
+    // L'application s'ouvre dans la même langue.
+    document.querySelectorAll('a[href^="https://app.skyvantac.com/"]').forEach(function(el){
+      var u = new URL(el.href); u.searchParams.set('langue', langue); el.href = u.toString();
+    });
   }
   function chargerPlaces(){
     if (!window.fetch) return;
