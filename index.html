@@ -64,6 +64,7 @@
   .statut{margin-top:44px; max-width:420px}
   .statut[hidden]{display:none}
   .jauge{height:2px; background:var(--trait); border-radius:2px; overflow:hidden}
+  [data-places]{font-variant-numeric:tabular-nums}
   .jauge span{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--meridien),var(--champagne)); transition:width 1.6s cubic-bezier(.2,.7,.2,1) .4s}
   .statut p{margin:12px 0 0; font-size:14px; color:var(--brume)}
   .statut strong{color:var(--ivoire); font-weight:600}
@@ -648,7 +649,7 @@ function svGlobe(canvas, opts) {
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var v = t[el.getAttribute('data-i18n')]; if (typeof v === 'string') el.textContent = v;
     });
-    document.querySelectorAll('[data-places]').forEach(function(el){ if (places) el.innerHTML = t.places(places); });
+    rendrePlaces();
     document.documentElement.lang = langue;
     document.documentElement.dir = langue === 'ar' ? 'rtl' : 'ltr';
     document.getElementById('langue').value = langue;
@@ -657,6 +658,32 @@ function svGlobe(canvas, opts) {
     document.querySelectorAll('a[href^="https://app.skyvantac.com/"]').forEach(function(el){
       var u = new URL(el.href); u.searchParams.set('langue', langue); el.href = u.toString();
     });
+  }
+  // Pendant le défilement du compteur, valeur affichée (sinon null).
+  var defile = null;
+  function rendrePlaces(){
+    if (!places) return;
+    var t = TEXTES[langue];
+    var p = defile === null ? places : { total:places.total, attribuees:places.attribuees, restantes:defile };
+    document.querySelectorAll('[data-places]').forEach(function(el){ el.innerHTML = t.places(p); });
+  }
+  // Les places restantes défilent du total jusqu'à la vraie valeur, au
+  // rythme de la jauge (même délai, même durée). Immédiat si le visiteur
+  // a réduit les animations.
+  function defilerPlaces(){
+    if (!places || places.restantes === places.total) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var depart = places.total, arrivee = places.restantes, t0 = null;
+    defile = depart; rendrePlaces();
+    function pas(maintenant){
+      if (t0 === null) t0 = maintenant + 400;
+      var k = Math.min(1, Math.max(0, (maintenant - t0) / 1600));
+      var adouci = 1 - Math.pow(1 - k, 3);
+      var v = Math.round(depart + (arrivee - depart) * adouci);
+      if (v !== defile) { defile = v; rendrePlaces(); }
+      if (k < 1) requestAnimationFrame(pas); else { defile = null; rendrePlaces(); }
+    }
+    requestAnimationFrame(pas);
   }
   function chargerPlaces(){
     if (!window.fetch) return;
@@ -669,6 +696,7 @@ function svGlobe(canvas, opts) {
         requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.querySelector('.jauge span').style.width = pct + '%'; }); });
       });
       appliquer(langue);
+      defilerPlaces();
     }).catch(function(){});
   }
   document.getElementById('langue').addEventListener('change', function(e){ appliquer(e.target.value); });
